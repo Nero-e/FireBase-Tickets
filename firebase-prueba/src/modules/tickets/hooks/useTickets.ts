@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient  } from "@tanstack/react-query";
-import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, getDocs, doc, updateDoc } from "firebase/firestore";
 
 import { db } from "@/shared/lib/firebase";
 import { Ticket } from "../schemas/ticketSchema";
@@ -27,6 +27,18 @@ export function useTickets() {
         onSuccess: () => queryClient.invalidateQueries({queryKey: ["tickets"]}),
     })
 
+    const addResponse = useMutation({
+        mutationFn: async (ticketId: string) => {
+            const ticketResponseRef = doc(db, "tickets", ticketId);
+            await updateDoc(ticketResponseRef, {
+                status: "answered",
+                response: "!Gracias por tu ticket¡ Aquí va una respuesta automática.",
+                updateAt: serverTimestamp(),
+            });
+        },
+        onSuccess: () => queryClient.invalidateQueries({queryKey: ["tickets"]}),
+    })
+
     const { data, isLoading } = useQuery({
         queryKey: ["tickets"],
         queryFn: async (): Promise<Ticket[]> => {
@@ -42,5 +54,5 @@ export function useTickets() {
         },
     });
 
-    return { addTicket, data, isLoading };
+    return { addTicket, data, isLoading, addResponse };
 }

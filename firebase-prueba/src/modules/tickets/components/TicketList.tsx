@@ -12,7 +12,7 @@ import { cn } from "@/shared/lib/ui/utils";
 import { Button } from "@/shared/components/ui/button";
 
 export const TicketList = () => {
-  const { data: tickets, isLoading } = useTickets();
+  const { data: tickets, isLoading, addResponse } = useTickets();
 
   if (isLoading) return <div>Cargando tickets...</div>;
   if (!tickets?.length) return <div>No hay tickets</div>;
@@ -37,6 +37,7 @@ export const TicketList = () => {
             </div>
             {ticket.status == "pending" && (
               <Button
+              onClick={() => addResponse.mutate(ticket.id)}
                 variant="outline"
                 className={cn(
                   "cursor-pointer hover:bg-[#D81159] hover:text-white shadow-lg mt-4"

@@ -7,6 +7,7 @@ export const ticketSchema = z.object({
   status: z.enum(["pending", "answered"]).default("pending"),
   response: z.string().optional(),
   createdAt: z.date().optional(),
+  updateAt: z.date().optional(),
 });
 
 export const ticketFormSchema = ticketSchema.pick({
