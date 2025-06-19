@@ -20,6 +20,7 @@ export const TicketList = () => {
   return (
     <div className="space-y-2">
       {tickets.map((ticket) => (
+        // Contenedor (card)
         <Card key={ticket.id}>
           <CardHeader>
             <CardTitle>Ticket #:</CardTitle>
@@ -35,6 +36,7 @@ export const TicketList = () => {
             <div>
               <strong>Estado:</strong> {ticket.status}
             </div>
+            {/* Muestra el botón cuando el estado en base  de datos del registro esta en un estado pendiente de lo contrario no lo muestra */}
             {ticket.status == "pending" && (
               <Button
               onClick={() => addResponse.mutate(ticket.id)}
@@ -46,6 +48,7 @@ export const TicketList = () => {
                 Simular Respuesta Automática
               </Button>
             )}
+            {/* Muestra la respuesta si esta en la base de datos de lo contrrio no lo muestra */}
             {ticket.status == "answered" && (
               <div>
                 <strong>Estado:</strong> {ticket.response}
